@@ -7,8 +7,11 @@ metadata:
     app: redis
     version: "{{ redis_app_image_tag }}"
 spec:
+{% if redis_pvc_storage_class_name %}
+  storageClassName: {{ redis_pvc_storage_class_name }}
+{% endif %}
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: {{ redis_data_volume_size }}

@@ -38,7 +38,7 @@ You don't need to be connected to your OpenShift instance to run this playbook.
 $ bin/run ansible-playbook create_databases_vault.yml --ask-vault-pass
 ```
 
-## `delete_project.yml`
+## `delete_namespace.yml`
 
 This playbook deletes a project with all OpenShift objects for a customer
 (default: `eugene`) in a particular environment (default: `development`).
@@ -47,13 +47,13 @@ This playbook deletes a project with all OpenShift objects for a customer
 
 ```bash
 # development
-$ bin/ansible-playbook delete_project.yml -e "customer=eugene env_type=staging"
+$ bin/ansible-playbook delete_namespace.yml -e "customer=eugene env_type=staging"
 
 # native command for production
 $ docker run --rm -it \
     --env-file env.d/production \
     arnold \
-    ansible-playbook delete_project.yml -e "customer=eugene env_type=staging"
+    ansible-playbook delete_namespace.yml -e "customer=eugene env_type=staging"
 ```
 
 ## `bootstrap.yml`
@@ -63,7 +63,7 @@ OpenShift objects for a customer (default: `eugene`) in a particular
 environment (default: `development`).
 It executes sequentially the following playbooks:
 
-- `delete_project.yml`
+- `delete_namespace.yml`
 - `init_project.yml`
 - `deploy.yml`
 
@@ -85,13 +85,13 @@ $ docker run --rm -it \
 
 ## `init_project.yml`
 
-This playbook is a "meta" playbook that creates a new project with all required
-OpenShift objects for a customer (default: `eugene`) in a particular environment
+This playbook is a "meta" playbook that creates a new namespace with all required
+Kubernetes objects for a customer (default: `eugene`) in a particular environment
 (default: `development`).
 
 It executes sequentially the following playbooks:
 
-- `create_project.yml`
+- `create_namespace.yml`
 - `create_volumes.yml`
 - `create_htpasswds.yml` (when `activate_http_basic_auth` is true)
 - `create_secrets.yml`
@@ -163,22 +163,22 @@ $ docker run --rm -it \
         -e "customer=eugene env_type=staging apps_filter=richie"
 ```
 
-## `create_project.yml`
+## `create_namespace.yml`
 
-This playbook only creates a new OpenShift project name defined with the
+This playbook only creates a new Kubernetes namespace defined with the
 following pattern: `{{ env_type }}-{{ customer }}`
 
 ### Usage
 
 ```bash
 # development
-$ bin/ansible-playbook create_project.yml -e "customer=eugene env_type=staging"
+$ bin/ansible-playbook create_namespace.yml -e "customer=eugene env_type=staging"
 
 # native command for production
 $ docker run --rm -it \
     --env-file env.d/production \
     arnold \
-    ansible-playbook create_project.yml -e "customer=eugene env_type=staging"
+    ansible-playbook create_namespace.yml -e "customer=eugene env_type=staging"
 ```
 
 ## `create_secrets.yml`

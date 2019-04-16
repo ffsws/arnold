@@ -11,6 +11,16 @@
 
     - import_tasks: tasks/set_vars.yml
 
+    # Set the deployment stamp value for this deployment
+    - name: Set deployment stamp
+      set_fact: deployment_stamp="d-{{ lookup('pipe', 'date +%y%m%d-%Hh%Mm%Ss') }}"
+      tags: deploy
+
+    # Set the job stamp for this deployment
+    - name: Set job stamp
+      set_fact: job_stamp="j-{{ lookup('pipe', 'date +%y%m%d-%Hh%Mm%Ss') }}"
+      tags: deploy
+
     - include_tasks: tasks/run_tasks_for_apps.yml
       vars:
         tasks:

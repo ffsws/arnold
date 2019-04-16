@@ -5,4 +5,5 @@ redis_app_image_tag: 4
 redis_app_port: 6379
 
 # -- volume size
+redis_pvc_storage_class_name: cinder-classic
 redis_data_volume_size: 2Gi

@@ -8,8 +8,11 @@ metadata:
     version: "{{ marsha_image_tag }}"
     deployment_stamp: "{{ deployment_stamp }}"
 spec:
+{% if marsha_pvc_storage_class_name %}
+  storageClassName: {{ marsha_pvc_storage_class_name }}
+{% endif %}
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: {{ marsha_media_volume_size }}

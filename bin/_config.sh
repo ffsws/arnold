@@ -18,16 +18,16 @@ function _set_minishift_path() {
 function _set_openshift_env() {
 
     # Check that the current user is already logged in OpenShift
-    if ! oc whoami &> /dev/null; then
+    if ! kubectl cluster-info &> /dev/null; then
         echo "Error: you need to login to an OpenShift server first."
         exit 1
     fi
 
     # Ansible's OpenShift raw module requires the following two environment
     # variables to be defined
-    K8S_AUTH_API_KEY="$(oc whoami -t)"
+    K8S_AUTH_API_KEY=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode )
     export K8S_AUTH_API_KEY
-    K8S_AUTH_HOST=$(oc version | grep Server | awk '{print $2}')
+    K8S_AUTH_HOST=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
     export K8S_AUTH_HOST
 
     # The OpenShift/k8s host is of the form https://domain:8443 so we can

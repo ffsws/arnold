@@ -1,5 +1,5 @@
 ---
-# This playbook creates an OpenShift project for a particular
+# This playbook creates a kubernetes namespace for a particular
 # customer/environment
 
 - hosts: local
@@ -10,15 +10,15 @@
 
   tasks:
     - name: Display playbook name
-      debug: msg="==== Starting create_project playbook ===="
+      debug: msg="==== Starting create_namespace playbook ===="
       tags: deploy
 
     - import_tasks: tasks/set_vars.yml
 
-    - name: Make sure the project exists in OpenShift and is up-to-date
+    - name: Make sure the namespace exists in Kubernetes and is up-to-date
       k8s:
         api_version: v1
-        kind: Project
+        kind: Namespace
         name: "{{ project_name }}"
         resource_definition:
           description: "{{ project_description|default(project_display_name)|default(project_name) }}"

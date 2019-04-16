@@ -1,7 +1,7 @@
 # Application default configuration
 
 # -- route
-marsha_host: "marsha.{{ project_name}}.{{ domain_name }}"
+marsha_host: "marsha.local"
 
 # -- nginx
 marsha_nginx_image_name: "fundocker/openshift-nginx"
@@ -35,3 +35,4 @@ marsha_should_sign_requests: true
 # -- volumes
 marsha_media_volume_size: 2Gi
 marsha_static_volume_size: 2Gi
+marsha_pvc_storage_class_name: cinder-classic

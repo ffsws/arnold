@@ -10,7 +10,7 @@
         prompt: "This playbook will delete project {{ project_name }} using domain {{ domain_name }}. Press enter to continue, Ctrl+C to interrupt"
       when: skip_verification is not defined
 
-- import_playbook: delete_project.yml
+- import_playbook: delete_namespace.yml
 - import_playbook: init_project.yml
 - import_playbook: build_images.yml
 - import_playbook: deploy.yml

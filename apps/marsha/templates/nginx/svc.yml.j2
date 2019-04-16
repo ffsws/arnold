@@ -16,5 +16,5 @@ spec:
       targetPort: {{ marsha_nginx_port }}
   selector:
     app: marsha
-    deploymentconfig: "marsha-nginx-{{ deployment_stamp }}"
+    deployment: "marsha-nginx-{{ deployment_stamp }}"
   type: ClusterIP

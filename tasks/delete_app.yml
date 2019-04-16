@@ -10,7 +10,7 @@
     - Service
     - ConfigMap
     - Job
-    - DeploymentConfig
+    - Deployment
     # Manually handle deletion cascade as the k8s module won't
     # https://github.com/ansible/ansible/issues/42302
     - ReplicationController
