@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - We now perform health checks to every service pods by implementing and
   defining `livenessProbe` and `readinessProbe` (except for Learninglocker
   applications).
+- Community applications (_i.e._ trays not distributed with Arnold) can now be
+  fetched, installed, configured & deployed.
 
 ### Changed
 
