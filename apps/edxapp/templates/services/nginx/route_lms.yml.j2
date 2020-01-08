@@ -8,7 +8,6 @@ metadata:
     customer: "{{ customer }}"
     app: "edxapp"
     service: "nginx"
-    version: "{{ edxapp_nginx_image_tag }}"
     route_prefix: "{{ prefix }}"
     route_target_service: "lms"
   annotations:
@@ -25,4 +24,4 @@ spec:
     targetPort: "{{ edxapp_nginx_lms_port }}-tcp"
   to:
     kind: Service
-    name: "edxapp-nginx-{{ deployment_stamp }}"
+    name: "edxapp-nginx-{{ prefix }}"

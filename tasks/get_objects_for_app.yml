@@ -18,6 +18,7 @@
     deployments: "{{ templates | map('regex_search', '.*/dc.*\\.yml\\.j2$') | select('string') | list }}"
     endpoints: "{{ templates | map('regex_search', '.*/ep.*\\.yml\\.j2$') | select('string') | list }}"
     services: "{{ templates | map('regex_search', '.*/svc.*\\.yml\\.j2$') | select('string') | list }}"
+    static_services: "{{ templates | map('regex_search', '.*/static-svc.*\\.yml\\.j2$') | select('string') | list }}"
     streams: "{{ templates | map('regex_search', '.*/is.*\\.yml\\.j2$') | select('string') | list }}"
     jobs: "{{ templates | map('regex_search', '.*/job_.*\\.yml\\.j2$') | select('string') | list }}"
     cronjobs: "{{ templates | map('regex_search', '.*/cronjob_.*\\.yml\\.j2$') | select('string') | list }}"
