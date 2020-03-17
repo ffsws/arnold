@@ -8,6 +8,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Added
+
+- New `nextcloud` application
+
 ### Changed
 
 - Upgrade ansible to `2.9.6`

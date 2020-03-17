@@ -1,0 +1,8 @@
+# customer: {{ customer }}
+# env_type: {{ env_type }}
+
+# postgresql
+{% set postgresql_credentials = databases.postgresql | json_query("[?release=='" ~ nextcloud_postgresql_version ~ "'].databases | [0][?application=='nextcloud'].{user: user, password: password} | [0]") %}
+
+DB_USER: {{ postgresql_credentials.user }}
+DB_PASSWORD: {{ postgresql_credentials.password }}
