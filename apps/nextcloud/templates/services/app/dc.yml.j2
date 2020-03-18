@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: nextcloud
+    service: nextcloud
+    version: "{{ nextcloud_version }}"
+    deployment_stamp: "{{ deployment_stamp }}"
+  name: "nextcloud-app-{{ deployment_stamp }}"
+  namespace: "{{ project_name }}"
+spec:
+  replicas: {{ nextcloud_app_replicas }}
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+        service: nextcloud
+        version: "{{ nextcloud_version }}"
+        deploymentconfig: "nextcloud-app-{{ deployment_stamp }}"
+        deployment_stamp: "{{ deployment_stamp }}"
+    spec:
+      # Prefer running pods on different nodes for redundancy
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: deploymentconfig
+                      operator: In
+                      values:
+                        - "nextcloud-app-{{ deployment_stamp }}"
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nextcloud
+          image: "{{ nextcloud_image_name }}:{{ nextcloud_image_tag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+              name: "{{ nextcloud_secret_name }}"
+            - configMapRef:
+              name: "nextcloud-app-dotenv-{{ deployment_stamp }}"
+          env:
+            - name: POSTGRES_DB
+              value: "{{ nextcloud_database_name }}"
+            - name: POSTGRES_HOST
+              value: "nextcloud-{{ nextcloud_database_host }}-{{ deployment_stamp }}"
+            - name: POSTGRES_PORT
+              value: "{{ nextcloud_postgresql_port }}"
+            - name: NEXTCLOUD_ADMIN_USER
+              value: "{{ nextcloud_admin_user }}"
+            - name: NEXTCLOUD_TRUSTED_DOMAINS
+              value: "{{ nextcloud_host | blue_green_hosts }}"
+            - name: REDIS_HOST
+              value: "{{ nextcloud_redis_host }}"
+            - name: REDIS_HOST_PORT
+              value: "{{ nextcloud_redis_port }}"
+            - name: DEBUG
+              value: "{{ nextcloud_debug }}"
+            - name: VERSION
+              value: "{{ nextcloud_version }}"
+

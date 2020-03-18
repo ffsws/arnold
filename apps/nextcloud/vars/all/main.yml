@@ -25,9 +25,16 @@ nextcloud_database_port: 5432
 nextcloud_database_name: "nextcloud"
 nextcloud_database_secret_name: "nextcloud-database-{{ nextcloud_vault_checksum | default('undefined_nextcloud_vault_checksum') }}"
 
+# -- redis
+nextcloud_redis_host: "redis"
+nextcloud_redis_port: 6379
+
 # -- nextcloud
 nextcloud_image_name: "fundocker/nextcloud"
+nextcloud_version: "18.0.2"
 nextcloud_image_tag: "18.0.2-fpm"
 nextcloud_app_replicas: 1
 nextcloud_secret_name: "nextcloud-{{ nextcloud_vault_checksum | default('undefined_nextcloud_vault_checksum') }}"
 nextcloud_activate_http_basic_auth: false
+nextcloud_admin_user: "admin"
+nextcloud_debug: false
