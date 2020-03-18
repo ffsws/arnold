@@ -1,17 +1,11 @@
 {% set http_basic_auth_enabled = activate_http_basic_auth or nextcloud_activate_http_basic_auth %}
 {% set bypass_htaccess = nextcloud_nginx_bypass_htaccess_ip_whitelist | length > 0 %}
-upstream nextcloud-backend {
-  server nextcloud-app-{{ deployment_stamp }}:{{ nextcloud_django_port }} fail_timeout=0;
-}
-
 upstream php-handler {
-    server 127.0.0.1:9000;
-    #server unix:/var/run/php/php7.2-fpm.sock;
+    server nextcloud-app-{{ deployment_stamp }}:9000 fail_timeout=0;
 }
 
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen {{ nextcloud_nginx_port }};
     server_name localhost;
 
     # Add headers to serve security related headers
@@ -43,6 +37,7 @@ server {
         log_not_found off;
         access_log off;
     }
+    
 {% if http_basic_auth_enabled %}
 {% if bypass_htaccess %}
     location @basicauth {

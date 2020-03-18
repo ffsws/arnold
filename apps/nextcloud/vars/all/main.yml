@@ -38,3 +38,6 @@ nextcloud_secret_name: "nextcloud-{{ nextcloud_vault_checksum | default('undefin
 nextcloud_activate_http_basic_auth: false
 nextcloud_admin_user: "admin"
 nextcloud_debug: false
+
+# -- volumes
+nextcloud_install_volume_size: 2Mi
