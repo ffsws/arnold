@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "ashley-app-dbmigrate-{{ job_stamp }}"
+  namespace: "{{ project_name }}"
+  labels:
+    app: ashley
+    service: app
+    version: "{{ ashley_image_tag }}"
+    deployment_stamp: "{{ deployment_stamp }}"
+    job_stamp: "{{ job_stamp }}"
+spec:
+  template:
+    metadata:
+      name: "ashley-app-dbmigrate-{{ job_stamp }}"
+      labels:
+        app: ashley
+        service: ashley
+        version: "{{ ashley_image_tag }}"
+        deployment_stamp: "{{ deployment_stamp }}"
+        job_stamp: "{{ job_stamp }}"
+    spec:
+{% if ashley_image_pull_secret_name is defined and ashley_image_pull_secret_name is not none %}
+      imagePullSecrets:
+        - name: "{{ ashley_image_pull_secret_name }}"
+{% endif %}
+      containers:
+        - name: ashley-dbmigrate
+          image: "{{ ashley_image_name }}:{{ ashley_image_tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: "{{ ashley_django_settings_module }}"
+            - name: DJANGO_CONFIGURATION
+              value: "{{ ashley_django_configuration }}"
+            - name: DB_ENGINE
+              value: "{{ ashley_database_engine }}"
+            - name: DB_NAME
+              value: "{{ ashley_database_name }}"
+            - name: DB_HOST
+              value: "ashley-{{ ashley_database_host }}-{{ deployment_stamp }}"
+            - name: DB_PORT
+              value: "{{ ashley_database_port }}"
+          envFrom:
+            - secretRef:
+                name: "{{ ashley_secret_name }}"
+          command:
+            - "bash"
+            - "-c"
+            - python manage.py migrate
+      restartPolicy: Never
